@@ -137,7 +137,7 @@ https://ronak-s-ip-wizard-7kdh5fyk7vhruqouvmgnmh.streamlit.app/
 ## Screenshots
 
 ### 1. Input Fields
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![App Screenshot](images/screenshot01.png)
 
 ### 2. Subnetting Calculations
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![Subnetting Calculations](images/screenshot02.png)
