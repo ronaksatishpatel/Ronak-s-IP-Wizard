@@ -5,6 +5,7 @@ It not only computes subnets — it teaches the logic behind every step.
 Enter a base network and the number of subnets you need, and the app instantly generates:
 
   New CIDR prefix
+  
   Subnet mask
   Bits borrowed
   Subnet increments
