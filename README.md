@@ -1,4 +1,4 @@
-# Subnet Calculator with Full Explanation
+# Advanced Subnet Calculator with Full Explanation
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
 ![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
