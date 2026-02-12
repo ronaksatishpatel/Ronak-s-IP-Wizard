@@ -11,13 +11,13 @@ st.title("📡 Subnet Calculator with Full Explanation")
 if "base_net" not in st.session_state:
     st.session_state["base_net"] = ""
 if "s_count" not in st.session_state:
-    st.session_state["s_count"] = ""
+    st.session_state["s_count"] = 8
 
 # --------- RESET LOGIC ---------
 def clear_form():
     # Setting the session state directly ensures the widgets update on the next run
     st.session_state["base_net"] = ""
-    st.session_state["s_count"] = ""
+    st.session_state["s_count"] = 8
     # st.rerun() is called automatically after a callback, forcing the UI to refresh
 
 # Add the Reset button with the callback
@@ -138,4 +138,5 @@ if base_network_input.strip() != "":
         st.error(f"An unexpected error occurred: {e}")
 else:
     st.info("👋 Welcome! Enter a network address and the number of subnets to get started.")
+
 
