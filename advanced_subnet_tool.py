@@ -11,13 +11,13 @@ st.title("📡 Subnet Calculator with Full Explanation")
 if "base_net" not in st.session_state:
     st.session_state["base_net"] = ""
 if "s_count" not in st.session_state:
-    st.session_state["s_count"] = 8
+    st.session_state["s_count"] = ""
 
 # --------- RESET LOGIC ---------
 def clear_form():
     # Setting the session state directly ensures the widgets update on the next run
     st.session_state["base_net"] = ""
-    st.session_state["s_count"] = 8
+    st.session_state["s_count"] = ""
     # st.rerun() is called automatically after a callback, forcing the UI to refresh
 
 # Add the Reset button with the callback
@@ -26,7 +26,7 @@ st.button("🔄 Reset All Fields", on_click=clear_form)
 # --------- INPUTS ---------
 # By using the 'key' parameter, Streamlit binds the widget's value to st.session_state[key]
 base_network_input = st.text_input(
-    "1️⃣ Enter base network (e.g., 10.0.0.0/8)", 
+    "1️⃣ Enter base network", 
     key="base_net",
     placeholder="e.g. 192.168.1.0/24"
 )
@@ -138,3 +138,4 @@ if base_network_input.strip() != "":
         st.error(f"An unexpected error occurred: {e}")
 else:
     st.info("👋 Welcome! Enter a network address and the number of subnets to get started.")
+
