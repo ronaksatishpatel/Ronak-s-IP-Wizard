@@ -7,41 +7,45 @@ st.set_page_config(page_title="Subnet Calculator with Explanation", layout="cent
 st.title("📡 Subnet Calculator with Full Explanation")
 
 # --------- INITIALIZE SESSION STATE ---------
-# We initialize the keys to empty/default values if they don't exist
+# We initialize the keys to empty strings so they start blank
 if "base_net" not in st.session_state:
     st.session_state["base_net"] = ""
 if "s_count" not in st.session_state:
-    st.session_state["s_count"] = 8
+    st.session_state["s_count"] = ""
 
 # --------- RESET LOGIC ---------
 def clear_form():
-    # Setting the session state directly ensures the widgets update on the next run
+    # Setting both to empty strings clears the fields entirely
     st.session_state["base_net"] = ""
-    st.session_state["s_count"] = 8
-    # st.rerun() is called automatically after a callback, forcing the UI to refresh
+    st.session_state["s_count"] = ""
 
 # Add the Reset button with the callback
 st.button("🔄 Reset All Fields", on_click=clear_form)
 
 # --------- INPUTS ---------
-# By using the 'key' parameter, Streamlit binds the widget's value to st.session_state[key]
+# We use text_input for both so that they can be truly blank
 base_network_input = st.text_input(
-    "1️⃣ Enter base network", 
+    "1️⃣ Enter base network (e.g., 10.0.0.0/8)", 
     key="base_net",
     placeholder="e.g. 192.168.1.0/24"
 )
 
-subnet_count = st.number_input(
+subnet_count_raw = st.text_input(
     "2️⃣ How many subnets to list?", 
-    min_value=1, 
-    max_value=2048, 
-    key="s_count"
+    key="s_count",
+    placeholder="e.g. 8"
 )
 
 # --------- CALCULATIONS ---------
-# Only proceed if the user has actually entered a network address
-if base_network_input.strip() != "":
+# Only proceed if both fields have values
+if base_network_input.strip() != "" and subnet_count_raw.strip() != "":
     try:
+        # Convert the string input back to a number for calculation
+        subnet_count = int(subnet_count_raw)
+        if subnet_count < 1:
+            st.error("❌ Please enter a number greater than 0 for subnets.")
+            st.stop()
+            
         network = ipaddress.ip_network(base_network_input, strict=False)
         original_prefix = network.prefixlen
 
@@ -113,7 +117,6 @@ if base_network_input.strip() != "":
             rows = []
             for i in range(display_count):
                 net = subnets[i]
-                # Avoid generating thousands of host objects for performance
                 usable_start = net.network_address + 1 if net.num_addresses > 2 else "N/A"
                 usable_end = net.broadcast_address - 1 if net.num_addresses > 2 else "N/A"
                 
@@ -132,11 +135,12 @@ if base_network_input.strip() != "":
             csv = df.to_csv(index=False).encode("utf-8")
             st.download_button("📥 Download Subnet Table as CSV", csv, file_name="subnet_table.csv")
 
-    except ValueError:
-        st.info("💡 Please enter a valid IPv4 network (e.g., 192.168.1.0/24) to begin.")
+    except ValueError as e:
+        if "invalid literal for int()" in str(e):
+             st.error("❌ Please enter a whole number for the subnet count.")
+        else:
+             st.info("💡 Please enter a valid IPv4 network (e.g., 192.168.1.0/24) to begin.")
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
 else:
     st.info("👋 Welcome! Enter a network address and the number of subnets to get started.")
-
-
