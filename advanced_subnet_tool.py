@@ -6,9 +6,32 @@ import pandas as pd
 st.set_page_config(page_title="Subnet Calculator with Explanation", layout="centered")
 st.title("📡 Subnet Calculator with Full Explanation")
 
-# --------- INPUTS (Only 2) ---------
-base_network_input = st.text_input("1️⃣ Enter base network (e.g., 101.0.0.0/8)", "101.0.0.0/8")
-subnet_count = st.number_input("2️⃣ How many subnets to list?", min_value=1, max_value=2048, value=8)
+# --------- RESET LOGIC ---------
+# Function to clear all session state variables, effectively resetting the app
+def reset_fields():
+    for key in st.session_state.keys():
+        del st.session_state[key]
+
+# Add a Reset button at the top to manually clear everything
+if st.button("🔄 Reset All Fields"):
+    reset_fields()
+    st.rerun()
+
+# --------- INPUTS (With Keys for Resetting) ---------
+# Adding a 'key' allows Streamlit to track these specific inputs in session_state
+base_network_input = st.text_input(
+    "1️⃣ Enter base network (e.g., 101.0.0.0/8)", 
+    value="101.0.0.0/8", 
+    key="base_net"
+)
+
+subnet_count = st.number_input(
+    "2️⃣ How many subnets to list?", 
+    min_value=1, 
+    max_value=2048, 
+    value=8, 
+    key="s_count"
+)
 
 # --------- CALCULATIONS ---------
 if base_network_input and subnet_count:
